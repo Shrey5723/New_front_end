@@ -1,13 +1,14 @@
-import Navbar from "@/components/Navbar";
-import HeroSection from "@/components/HeroSection";
-import ProblemSection from "@/components/ProblemSection";
-import HowItWorksSection from "@/components/HowItWorksSection";
-import FeaturesSection from "@/components/FeaturesSection";
-import AnalysisDashboard from "@/components/AnalysisDashboard";
-import ArchitectureSection from "@/components/ArchitectureSection";
-import TechStackSection from "@/components/TechStackSection";
-import CTASection from "@/components/CTASection";
-import Footer from "@/components/Footer";
+import { Navbar, Footer } from "@/components/common";
+import {
+  HeroSection,
+  ProblemSection,
+  HowItWorksSection,
+  FeaturesSection,
+  AnalysisDashboard,
+  ArchitectureSection,
+  TechStackSection,
+  CTASection,
+} from "@/components/sections";
 
 const Index = () => {
   return (
