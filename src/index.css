@@ -103,6 +103,7 @@
     content: '';
     @apply absolute inset-0 opacity-0 transition-opacity duration-500;
     background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), hsl(var(--primary) / 0.1), transparent 40%);
+    pointer-events: none;
   }
 
   .glass-card:hover::before {
@@ -119,6 +120,7 @@
     content: '';
     @apply absolute inset-0 rounded-xl opacity-0 transition-opacity duration-300;
     box-shadow: 0 0 20px hsl(var(--primary) / 0.4), inset 0 0 20px hsl(var(--primary) / 0.1);
+    pointer-events: none;
   }
 
   .glow-border:hover::after {

@@ -4,9 +4,9 @@ import heroBg from "@/assets/hero-bg.jpg";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-32">
       {/* Background Image */}
-      <div 
+      <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${heroBg})` }}
       >
@@ -46,11 +46,19 @@ const HeroSection = () => {
 
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up animation-delay-400">
-          <Button variant="hero" size="xl">
+          <Button
+            variant="hero"
+            size="xl"
+            onClick={() => document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' })}
+          >
             <Play className="w-5 h-5" />
             Analyze Video
           </Button>
-          <Button variant="hero-outline" size="xl">
+          <Button
+            variant="hero-outline"
+            size="xl"
+            onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
+          >
             How It Works
             <ChevronDown className="w-5 h-5" />
           </Button>
@@ -74,7 +82,10 @@ const HeroSection = () => {
       </div>
 
       {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+      <div
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce cursor-pointer"
+        onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
+      >
         <ChevronDown className="w-6 h-6 text-primary/60" />
       </div>
     </section>

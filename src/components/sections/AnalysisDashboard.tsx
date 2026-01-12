@@ -120,8 +120,8 @@ const AnalysisDashboard = () => {
                   <button
                     onClick={() => setMode('cloud')}
                     className={`flex flex-col items-center gap-2 px-6 py-4 rounded-xl border-2 transition-all ${mode === 'cloud'
-                        ? 'bg-primary/20 border-primary text-primary'
-                        : 'border-muted hover:border-primary/50'
+                      ? 'bg-primary/20 border-primary text-primary'
+                      : 'border-muted hover:border-primary/50'
                       }`}
                   >
                     <Cloud className="w-6 h-6" />
@@ -131,8 +131,8 @@ const AnalysisDashboard = () => {
                   <button
                     onClick={() => setMode('local')}
                     className={`flex flex-col items-center gap-2 px-6 py-4 rounded-xl border-2 transition-all ${mode === 'local'
-                        ? 'bg-primary/20 border-primary text-primary'
-                        : 'border-muted hover:border-primary/50'
+                      ? 'bg-primary/20 border-primary text-primary'
+                      : 'border-muted hover:border-primary/50'
                       }`}
                   >
                     <Cpu className="w-6 h-6" />
@@ -142,8 +142,8 @@ const AnalysisDashboard = () => {
                   <button
                     onClick={() => setMode('gradcam')}
                     className={`flex flex-col items-center gap-2 px-6 py-4 rounded-xl border-2 transition-all ${mode === 'gradcam'
-                        ? 'bg-primary/20 border-primary text-primary'
-                        : 'border-muted hover:border-primary/50'
+                      ? 'bg-primary/20 border-primary text-primary'
+                      : 'border-muted hover:border-primary/50'
                       }`}
                   >
                     <Eye className="w-6 h-6" />
@@ -153,8 +153,8 @@ const AnalysisDashboard = () => {
                   <button
                     onClick={() => setMode('master')}
                     className={`flex flex-col items-center gap-2 px-8 py-4 rounded-xl border-2 transition-all ${mode === 'master'
-                        ? 'bg-primary/20 border-primary text-primary'
-                        : 'border-primary/50 hover:border-primary'
+                      ? 'bg-primary/20 border-primary text-primary'
+                      : 'border-primary/50 hover:border-primary'
                       }`}
                   >
                     <ShieldCheck className="w-6 h-6" />
@@ -250,8 +250,8 @@ const AnalysisDashboard = () => {
                   {/* Verdict */}
                   <div className="text-center mb-6">
                     <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${isFake
-                        ? 'bg-destructive/10 border border-destructive/30'
-                        : 'bg-green-500/10 border border-green-500/30'
+                      ? 'bg-destructive/10 border border-destructive/30'
+                      : 'bg-green-500/10 border border-green-500/30'
                       }`}>
                       {isFake
                         ? <AlertTriangle className="w-4 h-4 text-destructive" />
@@ -283,13 +283,13 @@ const AnalysisDashboard = () => {
                         stroke={isFake ? "hsl(var(--destructive))" : "hsl(142, 76%, 36%)"}
                         strokeWidth="8"
                         strokeLinecap="round"
-                        strokeDasharray={`${result.confidence_score * 2.83}, 283`}
+                        strokeDasharray={`${(isFake ? result.confidence_score : (100 - result.confidence_score)) * 2.83}, 283`}
                         className="transition-all duration-1000"
                       />
                     </svg>
                     <div className="absolute inset-0 flex flex-col items-center justify-center">
                       <span className={`text-4xl font-display font-bold ${isFake ? 'text-destructive' : 'text-green-500'}`}>
-                        {result.confidence_score}%
+                        {isFake ? result.confidence_score : (100 - result.confidence_score)}%
                       </span>
                       <span className="text-xs text-muted-foreground">
                         {isFake ? 'Fake Probability' : 'Authenticity'}
@@ -297,7 +297,39 @@ const AnalysisDashboard = () => {
                     </div>
                   </div>
 
-                  {/* Model Breakdown (Master Scan Only) */}
+                  {/* Visual Evidence */}
+                  {result.visual_evidence && result.visual_evidence.length > 0 && (
+                    <div className="space-y-4 mb-6">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Eye className="w-4 h-4 text-primary" />
+                        <span className="text-sm font-medium">Forensic Evidence</span>
+                      </div>
+                      <div className="bg-muted/30 rounded-lg p-3 space-y-2">
+                        {result.visual_evidence.map((evidence, idx) => {
+                          // Transform scores when authentic (100 - score)
+                          let displayEvidence = evidence;
+                          if (!isFake) {
+                            // Match patterns like "15.62%" or "2%" and subtract from 100
+                            displayEvidence = evidence.replace(/(\d+\.?\d*)%/g, (match, num) => {
+                              const converted = (100 - parseFloat(num)).toFixed(2).replace(/\.00$/, '');
+                              return `${converted}%`;
+                            });
+                            // Also update labels for clarity
+                            displayEvidence = displayEvidence
+                              .replace('Threat Level', 'Trust Level')
+                              .replace('Confidence', 'Authenticity');
+                          }
+                          return (
+                            <div key={idx} className="text-xs text-muted-foreground flex items-start gap-2">
+                              <span className="text-primary mt-0.5">•</span>
+                              <span>{displayEvidence}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
                   {result.breakdown && (
                     <div className="space-y-4 mb-6">
                       <div className="flex items-center gap-2 mb-2">
@@ -309,20 +341,57 @@ const AnalysisDashboard = () => {
                         { name: "Cloud", score: result.breakdown.api },
                         { name: "Heatmap", score: result.breakdown.heatmap },
                         { name: "Neural", score: result.breakdown.neural },
-                      ].map((model, index) => (
-                        <div key={index} className="space-y-2">
-                          <div className="flex items-center justify-between text-sm">
-                            <span className="text-muted-foreground">{model.name}</span>
-                            <span className="text-foreground font-medium">{model.score}%</span>
+                      ].map((model, index) => {
+                        const rawScore = model.score;
+                        const displayScore = isFake ? rawScore : (100 - rawScore);
+                        const formattedScore = Number.isInteger(displayScore) ? displayScore : Number(displayScore.toFixed(2));
+
+                        return (
+                          <div key={index} className="space-y-2">
+                            <div className="flex items-center justify-between text-sm">
+                              <span className="text-muted-foreground">{model.name}</span>
+                              <span className="text-foreground font-medium">{formattedScore}%</span>
+                            </div>
+                            <div className="h-2 bg-muted rounded-full overflow-hidden">
+                              <div
+                                className="h-full bg-gradient-to-r from-primary to-glow-secondary rounded-full transition-all duration-1000"
+                                style={{ width: `${formattedScore}%` }}
+                              />
+                            </div>
                           </div>
-                          <div className="h-2 bg-muted rounded-full overflow-hidden">
-                            <div
-                              className="h-full bg-gradient-to-r from-primary to-glow-secondary rounded-full transition-all duration-1000"
-                              style={{ width: `${model.score}%` }}
-                            />
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {/* Audio Evidence */}
+                  {result.audio_evidence && result.audio_evidence.length > 0 && result.audio_evidence[0] !== "Ensemble Analysis" && (
+                    <div className="space-y-2 mb-6">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Play className="w-4 h-4 text-primary" />
+                        <span className="text-sm font-medium">Audio/Lip-Sync Analysis</span>
+                      </div>
+                      <div className="bg-muted/30 rounded-lg p-3 space-y-2">
+                        {result.audio_evidence.map((evidence, idx) => (
+                          <div key={idx} className="text-xs text-muted-foreground flex items-start gap-2">
+                            <span className="text-primary mt-0.5">🔊</span>
+                            <span>{evidence}</span>
                           </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Fact Check */}
+                  {result.fact_check_analysis && result.fact_check_analysis !== "Cross-verification complete." && (
+                    <div className="space-y-2 mb-6">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Shield className="w-4 h-4 text-primary" />
+                        <span className="text-sm font-medium">Fact Check</span>
+                      </div>
+                      <div className="bg-muted/30 rounded-lg p-3">
+                        <p className="text-xs text-muted-foreground">{result.fact_check_analysis}</p>
+                      </div>
                     </div>
                   )}
 

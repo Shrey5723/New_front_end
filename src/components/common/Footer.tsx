@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <footer className="relative py-12 border-t border-border/50">
       <div className="absolute inset-0 bg-navy-deep" />
-      
+
       <div className="relative z-10 container mx-auto px-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Logo & Copyright */}
@@ -31,13 +31,24 @@ const Footer = () => {
 
           {/* Links */}
           <div className="flex items-center gap-6">
-            <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <a
+              href="#"
+              onClick={(e) => e.preventDefault()}
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors cursor-not-allowed"
+            >
               Privacy
             </a>
-            <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <a
+              href="#"
+              onClick={(e) => e.preventDefault()}
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors cursor-not-allowed"
+            >
               Terms
             </a>
-            <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <a
+              href="#architecture"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
               Docs
             </a>
           </div>

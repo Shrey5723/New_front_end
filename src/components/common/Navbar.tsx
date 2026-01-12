@@ -8,7 +8,7 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50">
       <div className="absolute inset-0 bg-background/80 backdrop-blur-md border-b border-border/50" />
-      
+
       <div className="relative container mx-auto px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -39,9 +39,6 @@ const Navbar = () => {
             <a href="#architecture" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Architecture
             </a>
-            <a href="#demo" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-              Demo
-            </a>
           </div>
 
           {/* Desktop CTA */}
@@ -49,7 +46,11 @@ const Navbar = () => {
             <Button variant="ghost" size="sm">
               Login
             </Button>
-            <Button variant="default" size="sm">
+            <Button
+              variant="default"
+              size="sm"
+              onClick={() => document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' })}
+            >
               Get Started
             </Button>
           </div>
@@ -75,21 +76,25 @@ const Navbar = () => {
             <a href="#architecture" className="block text-muted-foreground hover:text-foreground">
               Architecture
             </a>
-            <a href="#demo" className="block text-muted-foreground hover:text-foreground">
-              Demo
-            </a>
             <div className="pt-4 space-y-2">
               <Button variant="ghost" className="w-full justify-start">
                 Login
               </Button>
-              <Button variant="default" className="w-full">
+              <Button
+                variant="default"
+                className="w-full"
+                onClick={() => {
+                  setIsOpen(false);
+                  document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
                 Get Started
               </Button>
             </div>
           </div>
         )}
       </div>
-    </nav>
+    </nav >
   );
 };
 

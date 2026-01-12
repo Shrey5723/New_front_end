@@ -7,7 +7,7 @@ const CTASection = () => {
       {/* Background Effects */}
       <div className="absolute inset-0 cyber-grid opacity-10" />
       <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-navy-deep" />
-      
+
       {/* Glowing Orbs */}
       <div className="absolute top-1/2 left-1/4 w-[400px] h-[400px] -translate-y-1/2 rounded-full bg-primary/10 blur-[150px] animate-glow-pulse" />
       <div className="absolute top-1/2 right-1/4 w-[300px] h-[300px] -translate-y-1/2 rounded-full bg-secondary/10 blur-[120px] animate-glow-pulse animation-delay-400" />
@@ -46,10 +46,6 @@ const CTASection = () => {
           <Button variant="hero" size="xl">
             Try TRINETRA
             <ArrowRight className="w-5 h-5" />
-          </Button>
-          <Button variant="hero-outline" size="xl">
-            <Play className="w-5 h-5" />
-            View Demo
           </Button>
         </div>
 
